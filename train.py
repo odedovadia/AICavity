@@ -1,8 +1,8 @@
-from tensorflow.keras.layers import Input, Dense, Flatten, Conv1D, Conv2D, Dropout, BatchNormalization, MaxPool1D, MaxPool2D, Reshape, LeakyReLU
-from tensorflow.keras.models import Model, load_model, Sequential
-from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger, ReduceLROnPlateau
-from tensorflow.python.keras.optimizer_v2.adam import Adam
+import os
 
+from tensorflow.keras.layers import Input, Dense, Flatten, Conv1D, Conv2D, Dropout, BatchNormalization, MaxPool1D, MaxPool2D, Reshape, LeakyReLU
+from tensorflow.keras.models import Model, load_model
+from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger, ReduceLROnPlateau
 
 from data_generator import generate_data_end2end
 from constants import NUM_SIGNALS, MAX_SIG_LEN, TEST_DATA_PATH, TRAIN_DATA_PATH
@@ -38,7 +38,6 @@ def build_model():
     x = Conv1D(1, 1, data_format='channels_first')(x)
 
     x = Flatten()(x)
-    # x = Dense(300, activation='relu')(x)
     y = Dense(1, activation='sigmoid')(x)
 
     model = Model(input_tensor, y)
@@ -50,8 +49,14 @@ def run_model():
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     model.summary()
 
+    callbacks = []
+    checkpoint = ModelCheckpoint(os.path.join('models', 'model.h5'), monitor='val_accuracy', mode='max', save_best_only=True, verbose=1)
+    logger = CSVLogger(os.path.join('history', 'history.CSV'))
+    callbacks += [checkpoint, logger]
+
     ds_train, ds_val = generate_data_end2end(file_path=TRAIN_DATA_PATH)
-    model.fit(ds_train, validation_data=ds_val, epochs=500, verbose=2)
+    model.fit(ds_train, validation_data=ds_val, epochs=500, verbose=2, callbacks=callbacks)
+
 
 if __name__ == '__main__':
     run_model()
