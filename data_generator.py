@@ -18,6 +18,7 @@ def declare_variables(file_path):
 
 
 def gen():
+    np.random.seed(42)
     for i in range(size):
         if np.random.rand() < 0.5:
             x = f[data[i, 0]]['scat_full_hole']
@@ -42,19 +43,24 @@ def build_tf_dataset():
 def generate_data_end2end(file_path: str = TEST_DATA_PATH, batch_size: int = BATCH_SIZE):
     declare_variables(file_path)
     dataset = build_tf_dataset()
-    # dataset = dataset.shuffle(buffer_size=100000)
 
-    train_size = math.ceil(size / batch_size * (1. - VALIDATION_SIZE))
+    if file_path == TEST_DATA_PATH:
+        test_ds = dataset
+        test_ds = unroll_ds(test_ds)
+        test_ds = test_ds.batch(batch_size)
+        return test_ds
+    else:
+        train_size = math.ceil(size / batch_size * (1. - VALIDATION_SIZE))
 
-    train_ds = dataset.skip(train_size)
-    val_ds = dataset.take(train_size)
+        train_ds = dataset.skip(train_size)
+        val_ds = dataset.take(train_size)
 
-    train_ds = unroll_ds(train_ds)
-    val_ds = unroll_ds(val_ds)
+        train_ds = unroll_ds(train_ds)
+        val_ds = unroll_ds(val_ds)
 
-    train_ds = train_ds.batch(batch_size)
-    val_ds = val_ds.batch(batch_size)
-    return train_ds, val_ds
+        train_ds = train_ds.batch(batch_size)
+        val_ds = val_ds.batch(batch_size)
+        return train_ds, val_ds
 
 
 def unroll_ds(ds):
