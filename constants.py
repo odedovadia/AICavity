@@ -7,4 +7,4 @@ NUM_SIGNALS = 9
 MAX_SIG_LEN = 1746
 VALIDATION_SIZE = 0.1
 
-MODEL_NAME = 'fully_connected'
+MODEL_NAME = 'conv_and_fully_connected_fourier'

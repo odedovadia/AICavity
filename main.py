@@ -8,11 +8,11 @@ from architectures import conv_architecture, fully_connected_architecture
 from data_generator import generate_data_end2end
 from constants import TEST_DATA_PATH, TRAIN_DATA_PATH, MODEL_NAME
 
-tf.random.set_seed(123)
+tf.random.set_seed(42)
 
 
 def run_model():
-    model = fully_connected_architecture(fourier=False)
+    model = conv_architecture(fourier=True, add_fully_connected=True)
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     model.summary()
 

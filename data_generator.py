@@ -6,14 +6,15 @@ import tensorflow as tf
 import numpy as np
 import h5py
 
-from constants import (TEST_DATA_PATH, TRAIN_DATA_PATH, BATCH_SIZE, MAX_SIG_LEN, VALIDATION_SIZE) 
+from constants import (TEST_DATA_PATH, BATCH_SIZE, MAX_SIG_LEN, VALIDATION_SIZE)
+
 
 def declare_variables(file_path):
     global f, data, size, max_sig_length
     f = h5py.File(file_path)
     data = f['data']
     size = len(data)
-    max_sig_length = MAX_SIG_LEN   
+    max_sig_length = MAX_SIG_LEN
 
 
 def gen():
@@ -28,14 +29,14 @@ def gen():
 
         signals_size = x.shape[1]
         pad_size = max_sig_length - signals_size
-        x = np.pad(x, ((0,0), (0, pad_size))) * 1e24
+        x = np.pad(x, ((0, 0), (0, pad_size))) * 1e24
         yield x, y
 
 
 def build_tf_dataset():
     dataset = tf.data.Dataset.from_generator(gen, output_signature=(
-         tf.TensorSpec(shape=(9, max_sig_length), dtype=tf.float32),
-         tf.TensorSpec(shape=(), dtype=tf.int32)))
+        tf.TensorSpec(shape=(9, max_sig_length), dtype=tf.float32),
+        tf.TensorSpec(shape=(), dtype=tf.int32)))
     return dataset
 
 
