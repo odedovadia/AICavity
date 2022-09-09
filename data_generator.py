@@ -6,8 +6,7 @@ import tensorflow as tf
 import numpy as np
 import h5py
 
-from constants import (TEST_DATA_PATH, TRAIN_DATA_PATH, BATCH_SIZE, MAX_SIG_LEN, VALIDATION_SIZE)
-    
+from constants import (TEST_DATA_PATH, TRAIN_DATA_PATH, BATCH_SIZE, MAX_SIG_LEN, VALIDATION_SIZE) 
 
 def declare_variables(file_path):
     global f, data, size, max_sig_length
