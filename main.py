@@ -1,8 +1,7 @@
 import os
 
 import tensorflow as tf
-from tensorflow.keras.layers import Input, Dense, Flatten, Conv1D, Conv2D, Dropout, BatchNormalization, MaxPool1D, MaxPool2D, Reshape, LeakyReLU, Add, GRU, Lambda
-from tensorflow.keras.models import Model, load_model
+from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger, ReduceLROnPlateau
 
 from architectures import conv_architecture, fully_connected_architecture
