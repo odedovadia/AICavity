@@ -1,6 +1,7 @@
 import os
 
 import tensorflow as tf
+import scipy.io
 from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger, ReduceLROnPlateau
 
@@ -12,7 +13,7 @@ tf.random.set_seed(42)
 
 
 def run_model():
-    model = conv_architecture(fourier=True, add_fully_connected=True)
+    model = conv_architecture(fourier=True, add_fully_connected=True,to_concat=True)
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     model.summary()
 
@@ -30,6 +31,11 @@ def run_inference():
     model = load_model(os.path.join('models', MODEL_NAME + '.h5'))
     ds_test = generate_data_end2end(file_path=TEST_DATA_PATH)
     model.evaluate(ds_test, verbose=2)
+    pred = model.predict(ds_test, verbose=2)
+    ts = ds_test.unbatch()
+    y = list(ts.map(lambda x, y: y))
+    ynp = [ x.numpy() for x in y]
+    scipy.io.savemat(os.path.join('test_pred',MODEL_NAME + '_pred_on_test.mat'), {'prediction': pred,'labels' : ynp})
 
 
 if __name__ == '__main__':

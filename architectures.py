@@ -1,15 +1,18 @@
+
 import tensorflow as tf
-from tensorflow.keras.layers import Input, Dense, Flatten, Conv1D, Dropout, BatchNormalization, MaxPool1D, LeakyReLU, Add, Lambda
+from tensorflow.keras.layers import Input, Dense, Flatten, Conv1D, Dropout, BatchNormalization, MaxPool1D, LeakyReLU, Add, Lambda, Concatenate
 from tensorflow.keras.models import Model
 
 from constants import NUM_SIGNALS, MAX_SIG_LEN
 
 
-def conv_architecture(fourier: bool = False, add_fully_connected: bool = False):
+def conv_architecture(fourier: bool = False, add_fully_connected: bool = False , to_concat: bool = False):
     input_tensor = Input(shape=(NUM_SIGNALS, MAX_SIG_LEN))
 
     if fourier:
         x = Lambda(lambda v: tf.abs(tf.signal.fft(tf.cast(v, tf.complex64))))(input_tensor)
+        if to_concat:
+            x= Concatenate(axis=1)([x,input_tensor])
         x = Conv1D(16, 8, data_format='channels_first')(x)
     else:
         x = Conv1D(16, 8, data_format='channels_first')(input_tensor)
