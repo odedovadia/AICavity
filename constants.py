@@ -14,4 +14,6 @@ MODEL_NAME_4 = 'fully_connected'
 MODEL_NAME_5 = 'fully_convolutional_fourier'
 MODEL_NAME_6 = 'fully_convolutional'
 MODEL_NAME_7 = 'conv_and_fully_connected_fourier_concat'
-MODEL_NAME = MODEL_NAME_7
+MODEL_NAME_8 = 'fully_connected_fourier_concat'
+MODEL_NAME_9 = 'fully_convolutional_fourier_concat'
+MODEL_NAME = MODEL_NAME_9

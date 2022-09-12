@@ -48,15 +48,20 @@ def conv_architecture(fourier: bool = False, add_fully_connected: bool = False ,
     return model
 
 
-def fully_connected_architecture(fourier: bool = False):
+def fully_connected_architecture(fourier: bool = False, to_concat: bool = False):
     input_tensor = Input(shape=(NUM_SIGNALS, MAX_SIG_LEN))
-    x = Flatten()(input_tensor)
+    #x = Flatten()(input_tensor)
 
     if fourier:
-        x = Lambda(lambda v: tf.abs(tf.signal.fft(tf.cast(v, tf.complex64))))(x)
+        x = Lambda(lambda v: tf.abs(tf.signal.fft(tf.cast(v, tf.complex64))))(input_tensor)
+        if to_concat:
+            x= Concatenate(axis=1)([x,input_tensor])
+        x = Flatten()(input_tensor)
     else:
+        x = Flatten()(input_tensor)
         x = Dense(64, activation='relu')(x)
 
+    
     for _ in range(5):
         x = Dense(64, activation='relu')(x)
         x = Dropout(0.3)(x)

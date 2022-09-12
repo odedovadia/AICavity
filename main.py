@@ -13,7 +13,9 @@ tf.random.set_seed(42)
 
 
 def run_model():
-    model = conv_architecture(fourier=True, add_fully_connected=True,to_concat=True)
+    #model = conv_architecture(fourier=True, add_fully_connected=True,to_concat=True)
+    model = conv_architecture(fourier=True, add_fully_connected=False,to_concat=True)
+    #model = fully_connected_architecture(fourier=True, to_concat=True)
     model.compile(optimizer='adam', loss='binary_crossentropy', metrics=['accuracy'])
     model.summary()
 
