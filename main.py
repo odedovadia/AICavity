@@ -6,6 +6,7 @@ from tensorflow.keras.models import load_model
 from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger, ReduceLROnPlateau
 
 from architectures import conv_architecture, fully_connected_architecture
+from metrics import calculate_metrics, save_roc_curve
 from data_generator import generate_data_end2end
 from constants import TEST_DATA_PATH, TRAIN_DATA_PATH, MODEL_NAME
 
@@ -36,8 +37,11 @@ def run_inference():
     pred = model.predict(ds_test, verbose=2)
     ts = ds_test.unbatch()
     y = list(ts.map(lambda x, y: y))
-    ynp = [ x.numpy() for x in y]
-    scipy.io.savemat(os.path.join('test_pred',MODEL_NAME + '_pred_on_test.mat'), {'prediction': pred,'labels' : ynp})
+    ynp = [x.numpy() for x in y]
+    metrics = calculate_metrics(ynp, pred)
+    print(metrics)
+    # save_roc_curve(ynp, pred, MODEL_NAME)
+    scipy.io.savemat(os.path.join('test_pred', MODEL_NAME + '_pred_on_test.mat'), {'prediction': pred, 'labels': ynp})
 
 
 if __name__ == '__main__':

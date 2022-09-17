@@ -1,3 +1,6 @@
+# TRAIN_DATA_PATH = 'G:\\My Drive\\clones\\sol\\data\\data_train.mat'
+# TEST_DATA_PATH = 'G:\\My Drive\\clones\\sol\\data\\data_test.mat'
+# TEMP_DIRECTORY = 'G:\\My Drive\\clones\\sol\\temp'
 TRAIN_DATA_PATH = 'D:\\work\\phd\\dl_project\\data_2022_jul_23.mat'
 TEST_DATA_PATH = 'D:\\work\\phd\\dl_project\\data_25_jul_2022_test_with_0_01_ref.mat'
 TEMP_DIRECTORY = 'D:\\work\\phd\\dl_project\\temp'
@@ -16,4 +19,4 @@ MODEL_NAME_6 = 'fully_convolutional'
 MODEL_NAME_7 = 'conv_and_fully_connected_fourier_concat'
 MODEL_NAME_8 = 'fully_connected_fourier_concat'
 MODEL_NAME_9 = 'fully_convolutional_fourier_concat'
-MODEL_NAME = MODEL_NAME_9
+MODEL_NAME = MODEL_NAME_7
